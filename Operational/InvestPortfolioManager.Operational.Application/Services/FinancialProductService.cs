@@ -1,80 +1,79 @@
-﻿using InvestPortfolioManager.Operational.Domain.Entities;
+﻿// Operational/InvestPortfolioManager.Operational.Application/Services/FinancialProductService.cs
+using System.Threading.Tasks;
+using InvestPortfolioManager.Operational.Domain.Entities;
 using InvestPortfolioManager.Operational.Domain.Repositories;
+using InvestPortfolioManager.Shared;
 using InvestPortfolioManager.Shared.Events;
-using InvestPortfolioManager.Operational.Domain.Services;
 
 namespace InvestPortfolioManager.Operational.Application.Services
 {
     public class FinancialProductService
     {
-        private readonly IFinancialProductRepository _repository;
+        private readonly IFinancialProductRepository _financialProductRepository;
         private readonly IEventPublisher _eventPublisher;
 
-        public FinancialProductService(IFinancialProductRepository repository, IEventPublisher eventPublisher)
+        public FinancialProductService(IFinancialProductRepository financialProductRepository, IEventPublisher eventPublisher)
         {
-            _repository = repository;
+            _financialProductRepository = financialProductRepository;
             _eventPublisher = eventPublisher;
         }
 
         public async Task AddProductAsync(FinancialProduct product)
         {
-            await _repository.AddAsync(product);
+            await _financialProductRepository.AddAsync(product);
 
-            var eventMessage = new FinancialProductChangedEvent
+            var productEvent = new FinancialProductChangedEvent
             {
-                Action = "Created",
-                ProductId = product.Id,
+                Action = "Added",
                 ProductName = product.Name,
-                MaturityDate = product.MaturityDate,
-                Value = product.Value
+                Value = product.Value,
+                MaturityDate = product.MaturityDate
             };
 
-            _eventPublisher.Publish(eventMessage);
+            await _eventPublisher.PublishAsync("FinancialProductChanged", productEvent);
         }
 
         public async Task<FinancialProduct> GetProductByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            return await _financialProductRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<FinancialProduct>> GetAllProductsAsync()
         {
-            return await _repository.GetAllAsync();
+            return await _financialProductRepository.GetAllAsync();
         }
 
         public async Task UpdateProductAsync(FinancialProduct product)
         {
-            await _repository.UpdateAsync(product);
+            await _financialProductRepository.UpdateAsync(product);
 
-            var eventMessage = new FinancialProductChangedEvent
+            var productEvent = new FinancialProductChangedEvent
             {
                 Action = "Updated",
-                ProductId = product.Id,
                 ProductName = product.Name,
-                MaturityDate = product.MaturityDate,
-                Value = product.Value
+                Value = product.Value,
+                MaturityDate = product.MaturityDate
             };
 
-            _eventPublisher.Publish(eventMessage);
+            await _eventPublisher.PublishAsync("FinancialProductChanged", productEvent);
         }
 
         public async Task DeleteProductAsync(int id)
         {
-            var product = await _repository.GetByIdAsync(id);
+            var product = await _financialProductRepository.GetByIdAsync(id);
             if (product != null)
             {
-                await _repository.DeleteAsync(product);
+                await _financialProductRepository.DeleteAsync(product);
 
-                var eventMessage = new FinancialProductChangedEvent
+                var productEvent = new FinancialProductChangedEvent
                 {
                     Action = "Deleted",
-                    ProductId = product.Id,
                     ProductName = product.Name,
-                    MaturityDate = product.MaturityDate,
-                    Value = product.Value
+                    Value = product.Value,
+                    MaturityDate = product.MaturityDate
                 };
 
-                _eventPublisher.Publish(eventMessage);
+                await _eventPublisher.PublishAsync("FinancialProductChanged", productEvent);
             }
         }
     }

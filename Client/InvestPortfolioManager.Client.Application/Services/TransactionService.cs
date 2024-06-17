@@ -2,33 +2,40 @@
 using InvestPortfolioManager.Client.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using InvestPortfolioManager.Shared.Events;
 
 namespace InvestPortfolioManager.Client.Application.Services
 {
     public class TransactionService
     {
         private readonly ITransactionRepository _transactionRepository;
+        private readonly IEventPublisher _eventPublisher;
 
-        public TransactionService(ITransactionRepository transactionRepository)
+        public TransactionService(ITransactionRepository transactionRepository, IEventPublisher eventPublisher)
         {
             _transactionRepository = transactionRepository;
+            _eventPublisher = eventPublisher;
         }
 
-        public async Task HandleMessage(string message)
+        public async Task AddTransactionAsync(Transaction transaction)
         {
-            // Process the message and convert it to a transaction
-            var transaction = new Transaction
+            if (!IsValidTransactionType(transaction.Type.ToString().ToUpper()))
             {
-                // Initialize transaction properties based on the message
+                throw new ArgumentException("Invalid transaction type");
+            }
+
+            await _transactionRepository.AddAsync(transaction);
+
+            var transactionEvent = new TransactionEvent
+            {
+                TransactionId = transaction.Id,
+                ProductId = transaction.ProductId,
+                Amount = transaction.Amount,
+                Date = transaction.Date,
+                Type = transaction.Type.ToString()
             };
 
-            // Add transaction to the repository
-            await _transactionRepository.AddAsync(transaction);
-        }
-
-        public async Task<IEnumerable<Transaction>> GetAllTransactionsAsync()
-        {
-            return await _transactionRepository.GetAllAsync();
+            await _eventPublisher.PublishAsync("TransactionAdded", transactionEvent);
         }
 
         public async Task<Transaction> GetTransactionByIdAsync(int id)
@@ -36,9 +43,19 @@ namespace InvestPortfolioManager.Client.Application.Services
             return await _transactionRepository.GetByIdAsync(id);
         }
 
-        public async Task AddTransactionAsync(Transaction transaction)
+        public async Task<List<Transaction>> GetAllTransactionsAsync()
         {
-            await _transactionRepository.AddAsync(transaction);
+            return await _transactionRepository.GetAllAsync();
+        }
+
+        public async Task HandleTransactionAddedAsync(TransactionEvent transactionEvent)
+        {
+            // Lógica para lidar com o evento de transação adicionada
+        }
+
+        private bool IsValidTransactionType(string type)
+        {
+            return Enum.IsDefined(typeof(TransactionType), type);
         }
     }
 }

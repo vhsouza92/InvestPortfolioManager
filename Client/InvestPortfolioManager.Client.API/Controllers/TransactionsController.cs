@@ -1,8 +1,8 @@
-﻿using InvestPortfolioManager.Client.Application.Services;
-using InvestPortfolioManager.Client.Domain.Entities;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using InvestPortfolioManager.Client.Application.Services;
+using InvestPortfolioManager.Client.Domain.Entities;
 
 namespace InvestPortfolioManager.Client.API.Controllers
 {
@@ -17,30 +17,29 @@ namespace InvestPortfolioManager.Client.API.Controllers
             _transactionService = transactionService;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<Transaction>> GetAllTransactions()
+        [HttpPost]
+        public async Task<IActionResult> AddTransaction([FromBody] Transaction transaction)
         {
-            return await _transactionService.GetAllTransactionsAsync();
+            await _transactionService.AddTransactionAsync(transaction);
+            return Ok();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transaction>> GetTransactionById(int id)
+        public async Task<IActionResult> GetTransactionById(int id)
         {
             var transaction = await _transactionService.GetTransactionByIdAsync(id);
-
             if (transaction == null)
             {
                 return NotFound();
             }
-
-            return transaction;
+            return Ok(transaction);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Transaction>> AddTransaction(Transaction transaction)
+        [HttpGet]
+        public async Task<IActionResult> GetAllTransactions()
         {
-            await _transactionService.AddTransactionAsync(transaction);
-            return CreatedAtAction(nameof(GetTransactionById), new { id = transaction.Id }, transaction);
+            var transactions = await _transactionService.GetAllTransactionsAsync();
+            return Ok(transactions);
         }
     }
 }

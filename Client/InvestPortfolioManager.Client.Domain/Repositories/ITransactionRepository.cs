@@ -8,6 +8,6 @@ namespace InvestPortfolioManager.Client.Domain.Repositories
     {
         Task AddAsync(Transaction transaction);
         Task<Transaction> GetByIdAsync(int id);
-        Task<IEnumerable<Transaction>> GetAllAsync();
+        Task<List<Transaction>> GetAllAsync();
     }
 }

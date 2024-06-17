@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace InvestPortfolioManager.Client.Domain.Entities
+﻿namespace InvestPortfolioManager.Shared.Events
 {
-    public class Transaction
+    public class TransactionEvent
     {
-        public int Id { get; set; }
+        public int TransactionId { get; set; }
         public int ProductId { get; set; }
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }

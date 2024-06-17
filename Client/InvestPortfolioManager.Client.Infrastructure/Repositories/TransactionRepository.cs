@@ -1,8 +1,8 @@
-﻿using InvestPortfolioManager.Client.Domain.Repositories;
-using InvestPortfolioManager.Client.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using InvestPortfolioManager.Client.Domain.Entities;
+using InvestPortfolioManager.Client.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace InvestPortfolioManager.Client.Infrastructure.Repositories
 {
@@ -26,7 +26,7 @@ namespace InvestPortfolioManager.Client.Infrastructure.Repositories
             return await _context.Transactions.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Transaction>> GetAllAsync()
+        public async Task<List<Transaction>> GetAllAsync()
         {
             return await _context.Transactions.ToListAsync();
         }

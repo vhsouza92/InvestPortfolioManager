@@ -9,50 +9,38 @@ GO
 USE InvestPortfolioDb;
 GO
 
--- Cria a tabela de produtos financeiros se não existir
-IF OBJECT_ID('dbo.FinancialProducts', 'U') IS NULL
-BEGIN
-    CREATE TABLE dbo.FinancialProducts
-    (
-        Id INT IDENTITY(1,1) PRIMARY KEY,
-        Name NVARCHAR(100) NOT NULL,
-        MaturityDate DATE NOT NULL,
-        Value DECIMAL(18, 2) NOT NULL
-    );
-END
-GO
+-- Create the FinancialProducts table
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='FinancialProducts' and xtype='U')
+CREATE TABLE FinancialProducts (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Value DECIMAL(18, 2) NOT NULL,
+    MaturityDate DATETIME NOT NULL
+);
 
--- Cria a tabela de transações se não existir
-IF OBJECT_ID('dbo.Transactions', 'U') IS NULL
+-- Insert initial data into FinancialProducts
+IF NOT EXISTS (SELECT * FROM FinancialProducts)
 BEGIN
-    CREATE TABLE dbo.Transactions
-    (
-        Id INT IDENTITY(1,1) PRIMARY KEY,
-        Type NVARCHAR(50) NOT NULL,
-        ProductId INT NOT NULL,
-        Date DATETIME NOT NULL,
-        Amount DECIMAL(18, 2) NOT NULL,
-        FOREIGN KEY (ProductId) REFERENCES dbo.FinancialProducts(Id)
-    );
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product A', 100.00, '2024-12-31');
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product B', 200.00, '2025-12-31');
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product C', 300.00, '2026-12-31');
 END
-GO
 
--- Insere dados iniciais na tabela de produtos financeiros se estiver vazia
-IF NOT EXISTS (SELECT 1 FROM dbo.FinancialProducts)
-BEGIN
-    INSERT INTO dbo.FinancialProducts (Name, MaturityDate, Value) VALUES
-    ('Product A', '2025-01-01', 1000.00),
-    ('Product B', '2026-01-01', 1500.00),
-    ('Product C', '2027-01-01', 2000.00);
-END
-GO
+-- Create the Transactions table
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Transactions' and xtype='U')
+CREATE TABLE Transactions (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    ProductId INT NOT NULL,
+    Amount DECIMAL(18, 2) NOT NULL,
+    Date DATETIME NOT NULL,
+    Type NVARCHAR(50) NOT NULL,
+    FOREIGN KEY (ProductId) REFERENCES FinancialProducts(Id)
+);
 
--- Insere dados iniciais na tabela de transações se estiver vazia
-IF NOT EXISTS (SELECT 1 FROM dbo.Transactions)
+-- Insert initial data into Transactions
+IF NOT EXISTS (SELECT * FROM Transactions)
 BEGIN
-    INSERT INTO dbo.Transactions (Type, ProductId, Date, Amount) VALUES
-    ('Buy', 1, '2024-01-01', 1000.00),
-    ('Sell', 2, '2024-06-01', 1500.00),
-    ('Buy', 3, '2024-12-01', 2000.00);
+    INSERT INTO Transactions (ProductId, Amount, Date, Type) VALUES (1, 150.00, '2024-06-01', 'Buy');
+    INSERT INTO Transactions (ProductId, Amount, Date, Type) VALUES (2, 250.00, '2024-06-02', 'Sell');
+    INSERT INTO Transactions (ProductId, Amount, Date, Type) VALUES (3, 350.00, '2024-06-03', 'Buy');
 END
-GO

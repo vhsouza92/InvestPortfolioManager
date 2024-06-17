@@ -1,10 +1,10 @@
 ﻿using System.Text;
-using System.Text.Json;
-using RabbitMQ.Client;
+using System.Threading.Tasks;
 using InvestPortfolioManager.Shared.Events;
-using InvestPortfolioManager.Operational.Domain.Services;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
 
-namespace InvestPortfolioManager.Operational.Infrastructure.Messaging
+namespace InvestPortfolioManager.Client.Infrastructure.Messaging
 {
     public class RabbitMqEventPublisher : IEventPublisher
     {
@@ -15,24 +15,16 @@ namespace InvestPortfolioManager.Operational.Infrastructure.Messaging
             _connection = connection;
         }
 
-        public void Publish(FinancialProductChangedEvent financialProductEvent)
+        public async Task PublishAsync(string eventName, object eventData)
         {
-            using (var channel = _connection.CreateModel())
-            {
-                channel.QueueDeclare(queue: "financialProductQueue",
-                                     durable: false,
-                                     exclusive: false,
-                                     autoDelete: false,
-                                     arguments: null);
+            using var channel = _connection.CreateModel();
+            channel.ExchangeDeclare(exchange: "exchange_name", type: ExchangeType.Topic);
 
-                var message = JsonSerializer.Serialize(financialProductEvent);
-                var body = Encoding.UTF8.GetBytes(message);
+            var message = JsonConvert.SerializeObject(eventData);
+            var body = Encoding.UTF8.GetBytes(message);
 
-                channel.BasicPublish(exchange: "",
-                                     routingKey: "financialProductQueue",
-                                     basicProperties: null,
-                                     body: body);
-            }
+            channel.BasicPublish(exchange: "exchange_name", routingKey: eventName, basicProperties: null, body: body);
+            await Task.CompletedTask;
         }
     }
 }

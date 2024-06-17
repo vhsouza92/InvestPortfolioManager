@@ -2,7 +2,11 @@ using InvestPortfolioManager.Client.Application.Services;
 using InvestPortfolioManager.Client.Domain.Repositories;
 using InvestPortfolioManager.Client.Infrastructure.Messaging;
 using InvestPortfolioManager.Client.Infrastructure.Repositories;
+using InvestPortfolioManager.Shared.Events;
 using Microsoft.EntityFrameworkCore;
+using RabbitMQ.Client;
+using Polly;
+using RabbitMQ.Client.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +22,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Application Services
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<TransactionService>();
-builder.Services.AddSingleton<IHostedService, RabbitMqEventConsumer>();
+builder.Services.AddHostedService<RabbitMqEventConsumer>();
+builder.Services.AddScoped<IEventPublisher, RabbitMqEventPublisher>();
+
+builder.Services.AddSingleton(sp =>
+{
+    var factory = new ConnectionFactory() { HostName = "rabbitmq" };
+    return Policy
+        .Handle<BrokerUnreachableException>()
+        .WaitAndRetry(5, retryAttempt => TimeSpan.FromSeconds(2 * retryAttempt))
+        .Execute(() => factory.CreateConnection());
+});
 
 // Kestrel 
 builder.WebHost.ConfigureKestrel(serverOptions =>
