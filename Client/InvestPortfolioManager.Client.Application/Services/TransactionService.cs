@@ -1,5 +1,6 @@
 ﻿using InvestPortfolioManager.Client.Domain.Repositories;
 using InvestPortfolioManager.Client.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using InvestPortfolioManager.Shared.Events;
@@ -19,7 +20,7 @@ namespace InvestPortfolioManager.Client.Application.Services
 
         public async Task AddTransactionAsync(Transaction transaction)
         {
-            if (!IsValidTransactionType(transaction.Type.ToString().ToUpper()))
+            if (!IsValidTransactionType(transaction.Type.ToUpper()))
             {
                 throw new ArgumentException("Invalid transaction type");
             }
@@ -30,9 +31,9 @@ namespace InvestPortfolioManager.Client.Application.Services
             {
                 TransactionId = transaction.Id,
                 ProductId = transaction.ProductId,
-                Amount = transaction.Amount,
-                Date = transaction.Date,
-                Type = transaction.Type.ToString()
+                Amount = transaction.Quantity * transaction.UnitPrice,
+                Date = transaction.TransactionDate,
+                Type = transaction.Type
             };
 
             await _eventPublisher.PublishAsync("TransactionAdded", transactionEvent);
@@ -55,7 +56,7 @@ namespace InvestPortfolioManager.Client.Application.Services
 
         private bool IsValidTransactionType(string type)
         {
-            return Enum.IsDefined(typeof(TransactionType), type);
+            return type == "BUY" || type == "SELL";
         }
     }
 }

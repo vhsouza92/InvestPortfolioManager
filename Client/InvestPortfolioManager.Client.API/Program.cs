@@ -22,6 +22,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Application Services
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<TransactionService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<UserService>();
 builder.Services.AddHostedService<RabbitMqEventConsumer>();
 builder.Services.AddScoped<IEventPublisher, RabbitMqEventPublisher>();
 
