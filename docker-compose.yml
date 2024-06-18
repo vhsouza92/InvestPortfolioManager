@@ -1,0 +1,68 @@
+version: '3.4'
+
+services:
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+
+  mssqltools:
+    image: mcr.microsoft.com/mssql-tools
+    depends_on:
+      - sqlserver
+    volumes:
+      - ./sql-scripts/CreateDatabase.sql:/tmp/CreateDatabase.sql
+      - ./sql-scripts/init-sqlserver.sh:/tmp/init-sqlserver.sh
+    command: /bin/bash /tmp/init-sqlserver.sh
+  operational-api:
+    build:
+      context: .
+      dockerfile: Operational/Dockerfile
+    ports:
+      - "8081:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=InvestPortfolioDb;User Id=sa;Password=Your_password123;TrustServerCertificate=True;
+    depends_on:
+      - rabbitmq
+      - sqlserver
+
+  client-api:
+    build:
+      context: .
+      dockerfile: Client/Dockerfile
+    ports:
+      - "8082:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=InvestPortfolioDb;User Id=sa;Password=Your_password123;TrustServerCertificate=True;
+    depends_on:
+      - rabbitmq
+      - sqlserver
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: Notification/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=InvestPortfolioDb;User Id=sa;Password=Your_password123;TrustServerCertificate=True;
+    depends_on:
+      - rabbitmq
+      - sqlserver
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  

@@ -1,0 +1,99 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Operational", "Operational", "{5810BA4F-8F99-460F-B7A7-011F4137134E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestPortfolioManager.Operational.API", "Operational\InvestPortfolioManager.Operational.API\InvestPortfolioManager.Operational.API.csproj", "{396307E5-482A-496B-89BA-2EF9BE755A15}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestPortfolioManager.Operational.Application", "Operational\InvestPortfolioManager.Operational.Application\InvestPortfolioManager.Operational.Application.csproj", "{833756A0-311F-4E14-9A9C-78F57F54D21E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestPortfolioManager.Operational.Domain", "Operational\InvestPortfolioManager.Operational.Domain\InvestPortfolioManager.Operational.Domain.csproj", "{5E22190A-24F3-4FDB-94AB-E7D7C3E70C92}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestPortfolioManager.Operational.Infrastructure", "Operational\InvestPortfolioManager.Operational.Infrastructure\InvestPortfolioManager.Operational.Infrastructure.csproj", "{7E4CEE68-AC7E-43FF-A60D-67EBE42F719B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{867D85D8-2D71-465B-A065-AF3972EC657E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestPortfolioManager.Client.API", "Client\InvestPortfolioManager.Client.API\InvestPortfolioManager.Client.API.csproj", "{05BBEF80-EFA0-44C6-9BB5-B84B0DB8D404}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestPortfolioManager.Client.Application", "Client\InvestPortfolioManager.Client.Application\InvestPortfolioManager.Client.Application.csproj", "{0D4497CA-6BA6-4FAE-A232-9ACBA6BDF4F9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestPortfolioManager.Client.Domain", "Client\InvestPortfolioManager.Client.Domain\InvestPortfolioManager.Client.Domain.csproj", "{C75BBFB0-C2CC-4B91-B10E-0553BD0BEF00}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestPortfolioManager.Client.Infrastructure", "Client\InvestPortfolioManager.Client.Infrastructure\InvestPortfolioManager.Client.Infrastructure.csproj", "{666CB60B-E153-437E-8EE1-A139EA2FB9E5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{2208AD16-1BF0-4590-8674-C4AB89E91F2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestPortfolioManager.Shared", "Shared\InvestPortfolioManager.Shared\InvestPortfolioManager.Shared.csproj", "{70E9FEB7-439A-4A66-83E0-9F27D9248CD2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notification", "Notification", "{729AA18F-B021-4311-ACCB-3815B5E7AA05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestPortfolioManager.Notification", "Notification\InvestPortfolioManager.Notification\InvestPortfolioManager.Notification.csproj", "{47010D1F-2125-493F-A4E6-1FD99F4DA471}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{396307E5-482A-496B-89BA-2EF9BE755A15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{396307E5-482A-496B-89BA-2EF9BE755A15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{396307E5-482A-496B-89BA-2EF9BE755A15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{396307E5-482A-496B-89BA-2EF9BE755A15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{833756A0-311F-4E14-9A9C-78F57F54D21E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{833756A0-311F-4E14-9A9C-78F57F54D21E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{833756A0-311F-4E14-9A9C-78F57F54D21E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{833756A0-311F-4E14-9A9C-78F57F54D21E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E22190A-24F3-4FDB-94AB-E7D7C3E70C92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E22190A-24F3-4FDB-94AB-E7D7C3E70C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E22190A-24F3-4FDB-94AB-E7D7C3E70C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E22190A-24F3-4FDB-94AB-E7D7C3E70C92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E4CEE68-AC7E-43FF-A60D-67EBE42F719B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E4CEE68-AC7E-43FF-A60D-67EBE42F719B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E4CEE68-AC7E-43FF-A60D-67EBE42F719B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E4CEE68-AC7E-43FF-A60D-67EBE42F719B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05BBEF80-EFA0-44C6-9BB5-B84B0DB8D404}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05BBEF80-EFA0-44C6-9BB5-B84B0DB8D404}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05BBEF80-EFA0-44C6-9BB5-B84B0DB8D404}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05BBEF80-EFA0-44C6-9BB5-B84B0DB8D404}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D4497CA-6BA6-4FAE-A232-9ACBA6BDF4F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D4497CA-6BA6-4FAE-A232-9ACBA6BDF4F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D4497CA-6BA6-4FAE-A232-9ACBA6BDF4F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D4497CA-6BA6-4FAE-A232-9ACBA6BDF4F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C75BBFB0-C2CC-4B91-B10E-0553BD0BEF00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C75BBFB0-C2CC-4B91-B10E-0553BD0BEF00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C75BBFB0-C2CC-4B91-B10E-0553BD0BEF00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C75BBFB0-C2CC-4B91-B10E-0553BD0BEF00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{666CB60B-E153-437E-8EE1-A139EA2FB9E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{666CB60B-E153-437E-8EE1-A139EA2FB9E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{666CB60B-E153-437E-8EE1-A139EA2FB9E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{666CB60B-E153-437E-8EE1-A139EA2FB9E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70E9FEB7-439A-4A66-83E0-9F27D9248CD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70E9FEB7-439A-4A66-83E0-9F27D9248CD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70E9FEB7-439A-4A66-83E0-9F27D9248CD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70E9FEB7-439A-4A66-83E0-9F27D9248CD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47010D1F-2125-493F-A4E6-1FD99F4DA471}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47010D1F-2125-493F-A4E6-1FD99F4DA471}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47010D1F-2125-493F-A4E6-1FD99F4DA471}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47010D1F-2125-493F-A4E6-1FD99F4DA471}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{396307E5-482A-496B-89BA-2EF9BE755A15} = {5810BA4F-8F99-460F-B7A7-011F4137134E}
+		{833756A0-311F-4E14-9A9C-78F57F54D21E} = {5810BA4F-8F99-460F-B7A7-011F4137134E}
+		{5E22190A-24F3-4FDB-94AB-E7D7C3E70C92} = {5810BA4F-8F99-460F-B7A7-011F4137134E}
+		{7E4CEE68-AC7E-43FF-A60D-67EBE42F719B} = {5810BA4F-8F99-460F-B7A7-011F4137134E}
+		{05BBEF80-EFA0-44C6-9BB5-B84B0DB8D404} = {867D85D8-2D71-465B-A065-AF3972EC657E}
+		{0D4497CA-6BA6-4FAE-A232-9ACBA6BDF4F9} = {867D85D8-2D71-465B-A065-AF3972EC657E}
+		{C75BBFB0-C2CC-4B91-B10E-0553BD0BEF00} = {867D85D8-2D71-465B-A065-AF3972EC657E}
+		{666CB60B-E153-437E-8EE1-A139EA2FB9E5} = {867D85D8-2D71-465B-A065-AF3972EC657E}
+		{70E9FEB7-439A-4A66-83E0-9F27D9248CD2} = {2208AD16-1BF0-4590-8674-C4AB89E91F2C}
+		{47010D1F-2125-493F-A4E6-1FD99F4DA471} = {729AA18F-B021-4311-ACCB-3815B5E7AA05}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6A104594-4BE5-45FD-B339-8A6E428B4599}
+	EndGlobalSection
+EndGlobal
