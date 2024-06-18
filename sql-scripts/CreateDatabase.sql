@@ -1,11 +1,11 @@
--- Verifica se o banco de dados já existe e o cria se não existir
+-- 
 IF DB_ID('InvestPortfolioDb') IS NULL
 BEGIN
     CREATE DATABASE InvestPortfolioDb;
 END
 GO
 
--- Usa o banco de dados
+-- 
 USE InvestPortfolioDb;
 GO
 
@@ -39,9 +39,26 @@ CREATE TABLE FinancialProducts (
 -- Insert initial data into FinancialProducts
 IF NOT EXISTS (SELECT * FROM FinancialProducts)
 BEGIN
-    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product A', 100.00, '2024-12-31');
-    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product B', 200.00, '2025-12-31');
-    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product C', 300.00, '2026-12-31');
+    -- 7
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 1', 100.00, DATEADD(day, 7, GETDATE()));
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 2', 200.00, DATEADD(day, 7, GETDATE()));
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 3', 300.00, DATEADD(day, 7, GETDATE()));
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 4', 400.00, DATEADD(day, 7, GETDATE()));
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 5', 500.00, DATEADD(day, 7, GETDATE()));
+
+    -- 15
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 6', 600.00, DATEADD(day, 15, GETDATE()));
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 7', 700.00, DATEADD(day, 15, GETDATE()));
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 8', 800.00, DATEADD(day, 15, GETDATE()));
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 9', 900.00, DATEADD(day, 15, GETDATE()));
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 10', 1000.00, DATEADD(day, 15, GETDATE()));
+
+    -- 30
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 11', 1100.00, DATEADD(day, 30, GETDATE()));
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 12', 1200.00, DATEADD(day, 30, GETDATE()));
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 13', 1300.00, DATEADD(day, 30, GETDATE()));
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 14', 1400.00, DATEADD(day, 30, GETDATE()));
+    INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product 15', 1500.00, DATEADD(day, 30, GETDATE()));
 END
 
 -- Create the Transactions table

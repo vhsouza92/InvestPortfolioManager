@@ -61,7 +61,7 @@ namespace InvestPortfolioManager.Operational.Application.Services
             var product = await _financialProductRepository.GetByIdAsync(id);
             if (product != null)
             {
-                await _financialProductRepository.DeleteAsync(product);
+                await _financialProductRepository.DeleteAsync(id);
             }
         }
     }

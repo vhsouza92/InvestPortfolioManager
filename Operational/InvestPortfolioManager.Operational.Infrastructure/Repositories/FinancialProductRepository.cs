@@ -42,5 +42,24 @@ namespace InvestPortfolioManager.Operational.Infrastructure.Repositories
             _context.FinancialProducts.Remove(product);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<FinancialProduct>> GetProductsNearMaturityAsync(DateTime date)
+        {
+             var today = DateTime.UtcNow;
+
+            return await _context.FinancialProducts
+                .Where(p => p.MaturityDate <= date && p.MaturityDate >= today)
+                .ToListAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var product = await _context.FinancialProducts.FindAsync(id);
+            if (product != null)
+            {
+                _context.FinancialProducts.Remove(product);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

@@ -8,12 +8,15 @@ InvestPortfolioManager is a distributed system for managing investment portfolio
 ### Operational Module
 - Manage financial products (create, update, delete, list).
 - Publish financial product events to RabbitMQ.
-- Send daily email notifications to administrators about products nearing maturity.
 
 ### Client Module
 - Buy and sell financial products.
 - Query available financial products and transaction history.
 - Consume financial product events from RabbitMQ.
+
+### Notification Module
+- Send daily email notifications to administrators about products nearing maturity.
+
 
 ## Project Structure
 
@@ -32,6 +35,13 @@ InvestPortfolioManager
 │   ├── InvestPortfolioManager.Client.Application
 │   ├── InvestPortfolioManager.Client.Domain
 │   ├── InvestPortfolioManager.Client.Infrastructure
+│   └── Dockerfile
+│
+├── Notification
+│   └── InvestPortfolioManager.Notification.API
+│   │    ├── Services
+│   │    ├── Entities
+│   │    └── Infrastructure
 │   └── Dockerfile
 │
 ├── Shared
@@ -73,6 +83,32 @@ InvestPortfolioManager
    The database is created and seeded with initial data through the `CreateDatabase.sql` script.
    - Ensure that the CreateDatabase.sql script is in the correct directory and configured in the docker-compose.yml.
 
+4. **Configure `appsettings.json` for Notification Module:**
+
+   Update the appsettings.json file in the InvestPortfolioManager.Notification project with the required settings for the email service and notification parameters. Example:
+
+   ```bash
+   {
+      NotificationSettings: {
+         SmtpSettings: {
+            DaysToMaturity: 7,
+            ToEmail: "your-email@example.com",
+            SmtpServer: "smtp.your-email-provider.com",
+            SmtpPort: 587,
+            SmtpUsername: "InvestPortfolioManager",
+            FromEmail: "your-email@example.com",
+            SenderEmail: "your-email@example.com",
+            SmtpPassword: "your-email-password",
+            EnableSsl: true
+         }
+      },
+      ConnectionStrings: {
+         DefaultConnection: "Server=your-sql-server;Database=InvestPortfolioDb;User Id=your-db-username;Password=your-db-password;"
+      }
+   }
+   ```
+   
+
 ### Usage
 
 - **Operational API:** Access Swagger UI at `http://localhost:8081/swagger`
@@ -96,6 +132,13 @@ InvestPortfolioManager
 - **API:** Contains controllers and API endpoints for buying, selling, and querying financial products.
 - **Application:** Contains application services implementing business logic for transactions.
 - **Domain:** Contains domain entities, repositories, and events related to transactions.
+- **Infrastructure:** Contains implementations of repositories, DbContext, and RabbitMQ event consumer.
+
+#### Notification Module
+
+**Namespace: `InvestPortfolioManager.Notification`**
+
+- **Application:** Contains application services implementing business logic for transactions.
 - **Infrastructure:** Contains implementations of repositories, DbContext, and RabbitMQ event consumer.
 
 #### Shared Module
