@@ -58,7 +58,7 @@ InvestPortfolioManager
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/InvestPortfolioManager.git
+   git clone https://github.com/vhsouza92/InvestPortfolioManager.git
    cd InvestPortfolioManager
    ```
 
@@ -68,21 +68,10 @@ InvestPortfolioManager
    docker-compose up --build
    ```
 
-3. **Apply database migrations:**
+3. **Apply database:**
 
-   - For Operational API:
-
-     ```bash
-     docker exec -it investportfoliomanager-operational-api-1 /bin/bash
-     dotnet ef database update --project ../InvestPortfolioManager.Operational.Infrastructure
-     ```
-
-   - For Client API:
-
-     ```bash
-     docker exec -it investportfoliomanager-client-api-1 /bin/bash
-     dotnet ef database update --project ../InvestPortfolioManager.Client.Infrastructure
-     ```
+   The database is created and seeded with initial data through the `CreateDatabase.sql` script.
+   - Ensure that the CreateDatabase.sql script is in the correct directory and configured in the docker-compose.yml.
 
 ### Usage
 
@@ -114,3 +103,8 @@ InvestPortfolioManager
 **Namespace: `InvestPortfolioManager.Shared`**
 
 - Contains shared definitions of events used for communication between the Operational and Client modules.
+
+
+### Git Repository
+
+- https://github.com/vhsouza92/InvestPortfolioManager.git

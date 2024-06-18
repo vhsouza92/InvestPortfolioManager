@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using InvestPortfolioManager.Client.Application.Models;
 using InvestPortfolioManager.Client.Application.Services;
 using InvestPortfolioManager.Client.Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace InvestPortfolioManager.Client.API.Controllers
 {
@@ -18,14 +19,29 @@ namespace InvestPortfolioManager.Client.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTransaction([FromBody] Transaction transaction)
+        public async Task<IActionResult> AddTransaction([FromBody] TransactionRequest request)
         {
-            await _transactionService.AddTransactionAsync(transaction);
-            return Ok();
+            try
+            {
+                await _transactionService.AddTransactionAsync(request);
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while processing your request.", details = ex.Message });
+            }
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTransactionById(int id)
+        public async Task<ActionResult<Transaction>> GetTransactionById(int id)
         {
             var transaction = await _transactionService.GetTransactionByIdAsync(id);
             if (transaction == null)
@@ -36,7 +52,7 @@ namespace InvestPortfolioManager.Client.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllTransactions()
+        public async Task<ActionResult<List<Transaction>>> GetAllTransactions()
         {
             var transactions = await _transactionService.GetAllTransactionsAsync();
             return Ok(transactions);

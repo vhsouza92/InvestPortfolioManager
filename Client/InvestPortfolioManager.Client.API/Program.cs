@@ -24,6 +24,8 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<TransactionService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+builder.Services.AddScoped<PortfolioService>();
 builder.Services.AddHostedService<RabbitMqEventConsumer>();
 builder.Services.AddScoped<IEventPublisher, RabbitMqEventPublisher>();
 

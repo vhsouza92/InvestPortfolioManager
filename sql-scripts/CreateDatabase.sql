@@ -9,7 +9,25 @@ GO
 USE InvestPortfolioDb;
 GO
 
--- Create the FinancialProducts table--------------------------------------------------------------------------
+-- Create the Users table
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Users' and xtype='U')
+CREATE TABLE Users (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) NOT NULL,
+    CreatedDate DATETIME NOT NULL,
+    UpdatedDate DATETIME NULL
+);
+
+-- Insert initial data into Users
+IF NOT EXISTS (SELECT * FROM Users)
+BEGIN
+    INSERT INTO Users (Name, Email, CreatedDate) VALUES ('User 1', 'user1@example.com', GETDATE());
+    INSERT INTO Users (Name, Email, CreatedDate) VALUES ('User 2', 'user2@example.com', GETDATE());
+    INSERT INTO Users (Name, Email, CreatedDate) VALUES ('User 3', 'user3@example.com', GETDATE());
+END
+
+-- Create the FinancialProducts table
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='FinancialProducts' and xtype='U')
 CREATE TABLE FinancialProducts (
     Id INT IDENTITY(1,1) PRIMARY KEY,
@@ -26,27 +44,7 @@ BEGIN
     INSERT INTO FinancialProducts (Name, Value, MaturityDate) VALUES ('Product C', 300.00, '2026-12-31');
 END
 
--- Create the Users table--------------------------------------------------------------------------
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Users' and xtype='U')
-CREATE TABLE Users (
-    Id INT IDENTITY(1,1) PRIMARY KEY,
-    Name NVARCHAR(100) NOT NULL,
-    Email NVARCHAR(100) NOT NULL,
-    CreatedDate DATETIME DEFAULT GETDATE(),
-    UpdatedDate DATETIME DEFAULT GETDATE()
-);
-
--- Insert initial data into Users
-IF NOT EXISTS (SELECT * FROM Users)
-BEGIN
-    INSERT INTO Users (Name, Email) VALUES ('John Doe', 'john.doe@example.com');
-    INSERT INTO Users (Name, Email) VALUES ('Jane Smith', 'jane.smith@example.com');
-    INSERT INTO Users (Name, Email) VALUES ('Alice Johnson', 'alice.johnson@example.com');
-    INSERT INTO Users (Name, Email) VALUES ('Bob Brown', 'bob.brown@example.com');
-    INSERT INTO Users (Name, Email) VALUES ('Charlie Davis', 'charlie.davis@example.com');
-END
-
--- Create the Transactions table--------------------------------------------------------------------------
+-- Create the Transactions table
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Transactions' and xtype='U')
 CREATE TABLE Transactions (
     Id INT IDENTITY(1,1) PRIMARY KEY,
@@ -64,8 +62,43 @@ CREATE TABLE Transactions (
 IF NOT EXISTS (SELECT * FROM Transactions)
 BEGIN
     INSERT INTO Transactions (ProductId, UserId, Quantity, UnitPrice, TransactionDate, Type) VALUES (1, 1, 10, 15.00, '2024-06-01', 'Buy');
-    INSERT INTO Transactions (ProductId, UserId, Quantity, UnitPrice, TransactionDate, Type) VALUES (2, 2, 20, 12.50, '2024-06-02', 'Sell');
-    INSERT INTO Transactions (ProductId, UserId, Quantity, UnitPrice, TransactionDate, Type) VALUES (3, 3, 30, 11.00, '2024-06-03', 'Buy');
-    INSERT INTO Transactions (ProductId, UserId, Quantity, UnitPrice, TransactionDate, Type) VALUES (1, 4, 40, 10.50, '2024-06-04', 'Sell');
-    INSERT INTO Transactions (ProductId, UserId, Quantity, UnitPrice, TransactionDate, Type) VALUES (2, 5, 50, 10.00, '2024-06-05', 'Buy');
+    INSERT INTO Transactions (ProductId, UserId, Quantity, UnitPrice, TransactionDate, Type) VALUES (2, 2, 20, 25.00, '2024-06-02', 'Sell');
+    INSERT INTO Transactions (ProductId, UserId, Quantity, UnitPrice, TransactionDate, Type) VALUES (3, 3, 30, 35.00, '2024-06-03', 'Buy');
+END
+
+-- Create the Portfolios table
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Portfolios' and xtype='U')
+CREATE TABLE Portfolios (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    UserId INT NOT NULL,
+    CreatedDate DATETIME NOT NULL,
+    UpdatedDate DATETIME NULL,
+    FOREIGN KEY (UserId) REFERENCES Users(Id)
+);
+
+-- Create the PortfolioItems table
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='PortfolioItems' and xtype='U')
+CREATE TABLE PortfolioItems (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    PortfolioId INT NOT NULL,
+    ProductId INT NOT NULL,
+    Quantity INT NOT NULL,
+    TotalValue DECIMAL(18, 2) NOT NULL,
+    FOREIGN KEY (PortfolioId) REFERENCES Portfolios(Id),
+    FOREIGN KEY (ProductId) REFERENCES FinancialProducts(Id)
+);
+
+-- Insert initial data into Portfolios and PortfolioItems
+IF NOT EXISTS (SELECT * FROM Portfolios)
+BEGIN
+    INSERT INTO Portfolios (UserId, CreatedDate) VALUES (1, GETDATE());
+    INSERT INTO Portfolios (UserId, CreatedDate) VALUES (2, GETDATE());
+    INSERT INTO Portfolios (UserId, CreatedDate) VALUES (3, GETDATE());
+END
+
+IF NOT EXISTS (SELECT * FROM PortfolioItems)
+BEGIN
+    INSERT INTO PortfolioItems (PortfolioId, ProductId, Quantity, TotalValue) VALUES (1, 1, 10, 150.00);
+    INSERT INTO PortfolioItems (PortfolioId, ProductId, Quantity, TotalValue) VALUES (2, 2, 20, 500.00);
+    INSERT INTO PortfolioItems (PortfolioId, ProductId, Quantity, TotalValue) VALUES (3, 3, 30, 1050.00);
 END
