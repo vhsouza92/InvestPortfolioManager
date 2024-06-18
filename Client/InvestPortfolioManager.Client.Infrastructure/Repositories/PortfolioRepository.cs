@@ -37,8 +37,10 @@ namespace InvestPortfolioManager.Client.Infrastructure.Repositories
             }
         }
 
-
-
+        public async Task<List<Portfolio>> GetAllPortfoliosAsync()
+        {
+            return await _context.Portfolios.Include(p => p.Items).ToListAsync();
+        }
 
         public async Task AddAsync(Portfolio portfolio)
         {

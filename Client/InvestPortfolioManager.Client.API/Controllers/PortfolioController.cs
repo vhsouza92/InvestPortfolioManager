@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using InvestPortfolioManager.Client.Application.Models;
+using InvestPortfolioManager.Client.Application.DTOs;
 using InvestPortfolioManager.Client.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 

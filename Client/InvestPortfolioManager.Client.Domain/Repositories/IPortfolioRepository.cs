@@ -6,6 +6,7 @@ namespace InvestPortfolioManager.Client.Domain.Repositories
     public interface IPortfolioRepository
     {
         Task<Portfolio> GetByUserIdAsync(int userId);
+        Task<List<Portfolio>> GetAllPortfoliosAsync();
         Task AddAsync(Portfolio portfolio);
         Task UpdateAsync(Portfolio portfolio);
         Task UpdatePortfolioItemAsync(PortfolioItem portfolioItem);

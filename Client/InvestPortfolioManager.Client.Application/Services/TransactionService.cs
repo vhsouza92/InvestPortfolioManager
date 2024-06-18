@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using InvestPortfolioManager.Client.Domain.Repositories;
 using InvestPortfolioManager.Client.Domain.Entities;
 using InvestPortfolioManager.Shared.Events;
-using InvestPortfolioManager.Client.Application.Models;
+using InvestPortfolioManager.Client.Application.DTOs;
 
 namespace InvestPortfolioManager.Client.Application.Services
 {
@@ -21,7 +21,7 @@ namespace InvestPortfolioManager.Client.Application.Services
             _portfolioRepository = portfolioRepository;
         }
 
-        public async Task AddTransactionAsync(TransactionRequest request)
+        public async Task AddTransactionAsync(TransactionDto request)
         {
             var portfolio = await _portfolioRepository.GetByUserIdAsync(request.UserId);
 
@@ -112,13 +112,6 @@ namespace InvestPortfolioManager.Client.Application.Services
         public async Task<List<Transaction>> GetAllTransactionsAsync()
         {
             return await _transactionRepository.GetAllAsync();
-        }
-
-        public async Task HandleTransactionAddedAsync(TransactionEvent transactionEvent)
-        {
-            Console.WriteLine($"HandleTransactionAddedAsync------------------------------------------------------------------------");
-            Console.WriteLine($"Transaction added: {transactionEvent} ");
-            // Lógica para lidar com o evento de transação adicionada
         }
 
         private bool IsValidTransactionType(string type)

@@ -1,6 +1,6 @@
-namespace InvestPortfolioManager.Client.Application.Models
+namespace InvestPortfolioManager.Client.Application.DTOs
 {
-    public class TransactionRequest
+    public class TransactionDto
     {
         public int ProductId { get; set; }
         public int UserId { get; set; }

@@ -21,16 +21,6 @@ namespace InvestPortfolioManager.Operational.Application.Services
         public async Task AddProductAsync(FinancialProduct product)
         {
             await _financialProductRepository.AddAsync(product);
-
-            var productEvent = new FinancialProductChangedEvent
-            {
-                Action = "Added",
-                ProductName = product.Name,
-                Value = product.Value,
-                MaturityDate = product.MaturityDate
-            };
-
-            await _eventPublisher.PublishAsync("FinancialProductChanged", productEvent);
         }
 
         public async Task<FinancialProduct> GetProductByIdAsync(int id)
@@ -45,11 +35,19 @@ namespace InvestPortfolioManager.Operational.Application.Services
 
         public async Task UpdateProductAsync(FinancialProduct product)
         {
+            var existingProduct = await _financialProductRepository.GetByIdAsync(product.Id);
+
+            if (existingProduct == null)
+            {
+                throw new ArgumentException("Product with the specified ID does not exist.");
+            }
+
             await _financialProductRepository.UpdateAsync(product);
 
             var productEvent = new FinancialProductChangedEvent
             {
                 Action = "Updated",
+                ProductId = product.Id,
                 ProductName = product.Name,
                 Value = product.Value,
                 MaturityDate = product.MaturityDate
@@ -64,16 +62,6 @@ namespace InvestPortfolioManager.Operational.Application.Services
             if (product != null)
             {
                 await _financialProductRepository.DeleteAsync(product);
-
-                var productEvent = new FinancialProductChangedEvent
-                {
-                    Action = "Deleted",
-                    ProductName = product.Name,
-                    Value = product.Value,
-                    MaturityDate = product.MaturityDate
-                };
-
-                await _eventPublisher.PublishAsync("FinancialProductChanged", productEvent);
             }
         }
     }

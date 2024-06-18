@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using InvestPortfolioManager.Client.Domain.Repositories;
-using InvestPortfolioManager.Client.Application.Models;
+using InvestPortfolioManager.Client.Application.DTOs;
 using InvestPortfolioManager.Client.Domain.Entities;
+using InvestPortfolioManager.Shared.Events;
 
 namespace InvestPortfolioManager.Client.Application.Services
 {
@@ -47,6 +48,21 @@ namespace InvestPortfolioManager.Client.Application.Services
             }
         }
 
-
+        public async Task UpdatePortfolioItemValuesAsync(FinancialProductChangedEvent productEvent)
+        {
+            var portfolios = await _portfolioRepository.GetAllPortfoliosAsync();
+            foreach (var portfolio in portfolios)
+            {
+                foreach (var item in portfolio.Items)
+                {
+                    if (item.ProductId == productEvent.ProductId)
+                    {
+                        item.TotalValue = item.Quantity * productEvent.Value;
+                        portfolio.UpdatedDate = DateTime.UtcNow;
+                    }
+                }
+                await _portfolioRepository.UpdateAsync(portfolio);
+            }
+        }
     }
 }

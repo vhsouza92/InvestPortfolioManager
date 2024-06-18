@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using InvestPortfolioManager.Operational.Application.Services;
+using InvestPortfolioManager.Operational.Domain.DTOs;
 using InvestPortfolioManager.Operational.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,34 @@ namespace InvestPortfolioManager.Operational.API.Controllers
             return Ok(products);
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update(int id, FinancialProductDTO productDto)
+        {
+            try { 
+
+                if (id <= 0)
+                {
+                    return BadRequest("Invalid ID.");
+                }
+
+                var product = new FinancialProduct
+                {
+                    Id = id,
+                    Name = productDto.Name,
+                    Value = productDto.Value,
+                    MaturityDate = productDto.MaturityDate
+                };
+
+                await _service.UpdateProductAsync(product);
+                return NoContent();
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { message = ex.Message});
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<FinancialProduct>> GetById(int id)
         {
@@ -42,16 +71,7 @@ namespace InvestPortfolioManager.Operational.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, FinancialProduct product)
-        {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
-            await _service.UpdateProductAsync(product);
-            return NoContent();
-        }
+        
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using InvestPortfolioManager.Client.Application.Models;
+using InvestPortfolioManager.Client.Application.DTOs;
 using InvestPortfolioManager.Client.Application.Services;
 using InvestPortfolioManager.Client.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +19,7 @@ namespace InvestPortfolioManager.Client.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTransaction([FromBody] TransactionRequest request)
+        public async Task<IActionResult> AddTransaction([FromBody] TransactionDto request)
         {
             try
             {

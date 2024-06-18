@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace InvestPortfolioManager.Client.Application.Models
+namespace InvestPortfolioManager.Client.Application.DTOs
 {
     public class PortfolioDto
     {

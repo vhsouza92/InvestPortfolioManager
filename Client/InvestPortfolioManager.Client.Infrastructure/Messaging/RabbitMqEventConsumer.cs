@@ -23,8 +23,8 @@ namespace InvestPortfolioManager.Client.Infrastructure.Messaging
             _connection = connection;
             _channel = _connection.CreateModel();
             _channel.ExchangeDeclare(exchange: "exchange_name", type: ExchangeType.Topic);
-            _channel.QueueDeclare(queue: "transaction_queue", durable: true, exclusive: false, autoDelete: false, arguments: null);
-            _channel.QueueBind(queue: "transaction_queue", exchange: "exchange_name", routingKey: "TransactionAdded");
+            _channel.QueueDeclare(queue: "financial_product_queue", durable: true, exclusive: false, autoDelete: false, arguments: null);
+            _channel.QueueBind(queue: "financial_product_queue", exchange: "exchange_name", routingKey: "FinancialProductChanged");
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -34,16 +34,16 @@ namespace InvestPortfolioManager.Client.Infrastructure.Messaging
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
-                var transactionEvent = JsonConvert.DeserializeObject<TransactionEvent>(message);
-
+                
+                var productEvent = JsonConvert.DeserializeObject<FinancialProductChangedEvent>(message);
                 using (var scope = _serviceScopeFactory.CreateScope())
                 {
-                    var transactionService = scope.ServiceProvider.GetRequiredService<TransactionService>();
-                    await transactionService.HandleTransactionAddedAsync(transactionEvent);
+                    var portfolioService = scope.ServiceProvider.GetRequiredService<PortfolioService>();
+                    await portfolioService.UpdatePortfolioItemValuesAsync(productEvent);
                 }
             };
 
-            _channel.BasicConsume(queue: "transaction_queue", autoAck: true, consumer: consumer);
+            _channel.BasicConsume(queue: "financial_product_queue", autoAck: true, consumer: consumer);
 
             return Task.CompletedTask;
         }
